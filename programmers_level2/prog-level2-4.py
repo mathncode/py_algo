@@ -1,13 +1,32 @@
-# 튜플을 원소로 가지는 리스트를 람다식을 이용해서 정렬
-n = int(input())
+# https://programmers.co.kr/learn/courses/30/lessons/42839
+# 소수 찾기
 
-array = []
+import math
+from itertools import permutations
 
-for i in range(n):
-  input_data = input().split()
-  array.append((input_data[0], int(input_data[1])))
+# 소수 찾기
+def solution(numbers):
+    def prime_number(x):
+        if x == 0 or x == 1: 
+            return False
+        for i in range(2, int(math.sqrt(x)) + 1):
+            if x % i == 0:
+                return False
+        return True        
 
-array = sorted(array, key=lambda x: x[1])
+    # 순열 이용해서 모든 경우의 수 생성 후 정수로 변환 
+    num = []
+    for i in range(len(numbers)):
+        p = list(permutations(numbers, i+1))
+        for i in p:
+            b = int(''.join(i))
+            num.append(b)
 
-for x in array:
-  print(x[0], end = ' ')
+    num_set = set(num)  # 중복을 제거하기 위해 집합으로 변환
+    
+    count = 0    
+    for i in num_set:  # 집합 안에서 소수를 찾아 개수 세기
+        if prime_number(i):
+            count += 1
+    
+    return count
